@@ -16,9 +16,18 @@ public class Pathmaker : MonoBehaviour {
 
 //	DECLARE CLASS MEMBER VARIABLES:
 //	Declare a private integer called counter that starts at 0; 		// counter var will track how many floor tiles I've instantiated
-//	Declare a public Transform called floorPrefab, assign the prefab in inspector;
-//	Declare a public Transform called pathmakerSpherePrefab, assign the prefab in inspector; 		// you'll have to make a "pathmakerSphere" prefab later
+	private int counter;
 
+	public static int globalTileCount;
+//	Declare a public Transform called floorPrefab, assign the prefab in inspector;
+	public Transform floorPrefab;
+//	Declare a public Transform called pathmakerSpherePrefab, assign the prefab in inspector; 		// you'll have to make a "pathmakerSphere" prefab later
+	public Transform pathmakerSpherePrefab;
+
+
+	public float upMiDNum;
+	public float downMiDNum;
+	public float spnNum;
 
 	void Update () {
 //		If counter is less than 50, then:
@@ -27,12 +36,32 @@ public class Pathmaker : MonoBehaviour {
 //				... Else if number is 0.25f-0.5f, then rotate myself -90 degrees;
 //				... Else if number is 0.99f-1.0f, then instantiate a pathmakerSpherePrefab clone at my current position;
 //			// end elseIf
-
+		if((counter<100000) && (globalTileCount<500)){
+			float dT = Random.Range(0f,1f);
+			if(dT<upMiDNum){
+				transform.Rotate(0,45f,0);
+			}
+			else if((dT>=upMiDNum)&&(dT<=downMiDNum)){
+				transform.Rotate(0,-45f,0);
+			}
+			else if((dT>=spnNum)&&(dT<=1f)){
+				Instantiate(pathmakerSpherePrefab,transform.position,Quaternion.Euler(0,0,0));
+			}
+			Instantiate(floorPrefab,transform.position,Quaternion.Euler(0,0,0));
+			transform.Translate(transform.forward*5f);
+			counter++;
+			globalTileCount ++;
+		}
+		else{
+			Destroy(gameObject);
+		}
 //			Instantiate a floorPrefab clone at current position;
 //			Move forward ("forward", as in, the direction I'm currently facing) by 5 units;
 //			Increment counter;
 //		Else:
 //			Destroy my game object; 		// self destruct if I've made enough tiles already
+		
+
 	}
 
 } // end of class scope

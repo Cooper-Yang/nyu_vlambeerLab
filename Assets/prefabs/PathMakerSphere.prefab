@@ -107,7 +107,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   floorPrefab: {fileID: 4113209856346078, guid: 65a6189e1bac1f549afc3dc95369929d,
     type: 3}
+  rock: {fileID: 4092277904332801711, guid: 44cd4557a14434624beef586768d1c83, type: 3}
+  pillar: {fileID: 3714387160068565268, guid: d80a25c6bd14a4cd7bff497be4e36003, type: 3}
   pathmakerSpherePrefab: {fileID: 7505866370684590374}
   upMiDNum: 0.1
   downMiDNum: 0.2
-  spnNum: 0.8

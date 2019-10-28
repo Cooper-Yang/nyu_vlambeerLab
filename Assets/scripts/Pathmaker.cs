@@ -18,17 +18,32 @@ public class Pathmaker : MonoBehaviour {
 //	Declare a private integer called counter that starts at 0; 		// counter var will track how many floor tiles I've instantiated
 	private int counter;
 
+	public static int MaxTile;
+	private int MaxSingle;
 	public static int globalTileCount;
 //	Declare a public Transform called floorPrefab, assign the prefab in inspector;
 	public Transform floorPrefab;
+	public Transform rock;
+	public Transform pillar;
+	
+	public Transform ins;
 //	Declare a public Transform called pathmakerSpherePrefab, assign the prefab in inspector; 		// you'll have to make a "pathmakerSphere" prefab later
 	public Transform pathmakerSpherePrefab;
 
 
 	public float upMiDNum;
 	public float downMiDNum;
-	public float spnNum;
+	private float spnNum;
 
+	public static List<Transform> floorList;
+
+
+	void Start(){
+		MaxTile = Random.Range(500,800);
+		MaxSingle = Random.Range(30,100);
+		spnNum = Random.Range(0.7f,0.98f);
+		
+	}
 	void Update () {
 //		If counter is less than 50, then:
 //			Generate a random number from 0.0f to 1.0f;
@@ -36,7 +51,7 @@ public class Pathmaker : MonoBehaviour {
 //				... Else if number is 0.25f-0.5f, then rotate myself -90 degrees;
 //				... Else if number is 0.99f-1.0f, then instantiate a pathmakerSpherePrefab clone at my current position;
 //			// end elseIf
-		if((counter<100000) && (globalTileCount<500)){
+		if((counter<1000) && (globalTileCount<MaxTile)){
 			float dT = Random.Range(0f,1f);
 			if(dT<upMiDNum){
 				transform.Rotate(0,45f,0);
@@ -47,21 +62,33 @@ public class Pathmaker : MonoBehaviour {
 			else if((dT>=spnNum)&&(dT<=1f)){
 				Instantiate(pathmakerSpherePrefab,transform.position,Quaternion.Euler(0,0,0));
 			}
-			Instantiate(floorPrefab,transform.position,Quaternion.Euler(0,0,0));
-			transform.Translate(transform.forward*5f);
+			
+			float choose = Random.Range(0f,1f);
+			if(choose < 0.2){
+				ins = rock;
+				//GameObject qq = Instantiate(rock,transform.position,Quaternion.Euler(0,0,0));
+			}else if(choose>=0.2&&choose<0.4){
+				ins = pillar;
+				//GameObject qq = Instantiate(pillar,transform.position,Quaternion.Euler(0,0,0));
+			}else if(choose>0.4){
+				ins = floorPrefab;
+				//GameObject qq = Instantiate(floorPrefab,transform.position,Quaternion.Euler(0,0,0));
+			}
+			
+			Transform super = Instantiate(ins,transform.position,Quaternion.Euler(0,0,0));
+			floorList.Add(super);
+			transform.Translate(transform.forward*5f); 
 			counter++;
 			globalTileCount ++;
 		}
 		else{
 			Destroy(gameObject);
-		}
+		}	
 //			Instantiate a floorPrefab clone at current position;
 //			Move forward ("forward", as in, the direction I'm currently facing) by 5 units;
 //			Increment counter;
 //		Else:
 //			Destroy my game object; 		// self destruct if I've made enough tiles already
-		
-
 	}
 
 } // end of class scope
